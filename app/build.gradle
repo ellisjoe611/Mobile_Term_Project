@@ -16,8 +16,8 @@ android {
         applicationId "com.quirodev.usagestatsmanagersample"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 7
-        versionName "1.2.4"
+        versionCode 8
+        versionName "1.2.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled true

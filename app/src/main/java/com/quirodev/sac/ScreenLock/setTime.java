@@ -1,5 +1,6 @@
 package com.quirodev.sac.ScreenLock;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -8,6 +9,7 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
@@ -16,10 +18,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.quirodev.sac.MainActivity;
 import com.quirodev.sac.R;
 
+import static com.quirodev.sac.MainActivity.mContext;
+
 public class setTime extends AppCompatActivity {
+    private DatabaseReference mReference,mReference2;
+    TelephonyManager tm;
     Button button;
+
     //EditText setTime;
     int time;
     int hour = 0, min = 0, sec = 0;
@@ -30,6 +40,10 @@ public class setTime extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.settime);
         button = (Button) findViewById(R.id.button);
+        tm = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+
+
+        String username = ((MainActivity) mContext).getName();
         //setTime = (EditText) findViewById(R.id.settime);
 
         NumberPicker NmHour = (NumberPicker) findViewById(R.id.locksetHour);

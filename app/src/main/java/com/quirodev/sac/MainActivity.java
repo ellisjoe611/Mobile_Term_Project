@@ -31,6 +31,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.quirodev.sac.Link.LinkMainActivity;
 import com.quirodev.sac.Ranking.refreshRank;
 import com.quirodev.sac.ScreenLock.setTime;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
 
-    String getlinkuser = "Nobody";
+    String getlinkuser = "";
     public static Context mContext;
     Button btn1, btn2, btn3, btn4, btn5, btn6;
     FragmentManager manager = getSupportFragmentManager();
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity
     private DatabaseReference mReference;
     String uid;
     private FirebaseUser user;
+    String tokenID = FirebaseInstanceId.getInstance().getToken();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,32 +148,37 @@ public class MainActivity extends AppCompatActivity
         email = (TextView) navigationView.getHeaderView(0).findViewById(R.id.email);
         linkuser = (TextView) navigationView.getHeaderView(0).findViewById(R.id.mainlinkuser);
 
-        mReference = FirebaseDatabase.getInstance().getReference().child(user.getDisplayName()).child("wlinkname");
-        mReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                getlinkuser = dataSnapshot.getValue().toString();
-                if (getlinkuser.equals("")){
-                    getlinkuser="Nobody";
-                }
-                if (user != null) {
-                    uid = user.getUid();
-                    name.setText(user.getDisplayName());
-                    email.setText(user.getEmail());
-                    linkuser.setText("Link with "+ getlinkuser);
-                    Log.d("하잉", "여기 이프문 들어옴?");
-                }
-                // DatabaseReference ref = FirebaseDatabase.getInstance().getReference(linkuser).child("time");
-                //textView.setText(linkuser + ": " + ref + "사용");
-                //Log.i("링크시간", dataSnapshot.getValue().toString());
-                Log.i("링크유저", getlinkuser);
-            }
+        mReference = FirebaseDatabase.getInstance().getReference().child(user.getDisplayName());
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+            mReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    //getlinkuser = dataSnapshot.child("wlinkname").getValue().toString();
+                    if (dataSnapshot.getValue() == null) {
+                        mReference.child("wlinkname").setValue("Nobody");
+                        mReference.child("tokenID").setValue(tokenID);
+                    } else {
+                        if (user != null) {
+                            getlinkuser = dataSnapshot.child("wlinkname").getValue().toString();
+                            uid = user.getUid();
+                            name.setText(user.getDisplayName());
+                            email.setText(user.getEmail());
+                            linkuser.setText("Link with " + getlinkuser);
+                            Log.d("하잉", "링크유저칸");
+                        }
+                        // DatabaseReference ref = FirebaseDatabase.getInstance().getReference(linkuser).child("time");
+                        //textView.setText(linkuser + ": " + ref + "사용");
+                        //Log.i("링크시간", dataSnapshot.getValue().toString());
+                        Log.i("링크유저", getlinkuser);
+                    }
+                }
 
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
 
         if (user != null) {
             uid = user.getUid();
@@ -182,8 +189,6 @@ public class MainActivity extends AppCompatActivity
         }
         mContext = this;
     }
-    private long pressedTime = 0;
-
 
 
     // 리스너 설정 메소드

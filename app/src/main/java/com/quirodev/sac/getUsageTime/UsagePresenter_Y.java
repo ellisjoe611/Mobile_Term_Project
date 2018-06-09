@@ -15,6 +15,7 @@ import java.util.List;
 
 import static android.app.AppOpsManager.MODE_ALLOWED;
 import static android.app.AppOpsManager.OPSTR_GET_USAGE_STATS;
+import static android.os.Process.SYSTEM_UID;
 import static android.os.Process.myUid;
 
 public class UsagePresenter_Y implements UsageContract.Presenter {
@@ -36,10 +37,11 @@ public class UsagePresenter_Y implements UsageContract.Presenter {
 
     private long getStartTime() {
         Calendar calendar = Calendar.getInstance();
-        calendar.get(Calendar.YEAR);
-        calendar.set(Calendar.MONTH,1);
-        calendar.set(Calendar.DAY_OF_MONTH,1);
-
+        calendar.add(Calendar.YEAR,-1);
+        return calendar.getTimeInMillis();
+    }
+    private long getEndTIme(){
+        Calendar calendar = Calendar.getInstance();
         return calendar.getTimeInMillis();
     }
 

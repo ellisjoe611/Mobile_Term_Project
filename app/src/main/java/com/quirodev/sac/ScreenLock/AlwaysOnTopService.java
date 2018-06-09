@@ -1,11 +1,15 @@
 package com.quirodev.sac.ScreenLock;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.PowerManager;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -14,7 +18,15 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.quirodev.sac.MainActivity;
 import com.quirodev.sac.R;
+
+import static com.quirodev.sac.MainActivity.mContext;
 
 /**
  * Created by hj on 2018. 5. 21..
@@ -23,9 +35,12 @@ import com.quirodev.sac.R;
 public class AlwaysOnTopService extends Service {
     LinearLayout view;
     LayoutInflater li;
+    TelephonyManager tm;
+
     TextView tv;
     int time;
-    int realtime;
+
+    private PowerManager.WakeLock wakelock;
 
     WindowManager.LayoutParams params = new WindowManager.LayoutParams(
             WindowManager.LayoutParams.TYPE_PHONE,//항상 최 상위에 있게
@@ -44,11 +59,15 @@ public class AlwaysOnTopService extends Service {
         super.onCreate();
         Log.d("껏다켜지면 여기오긴하니", "응?");
         li = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        PowerManager pm = (PowerManager)getSystemService(POWER_SERVICE);
 
 
         //최상위 윈도우에 넣기 위한 설정
         wm = (WindowManager) getSystemService(WINDOW_SERVICE); //윈도 매니저
+        tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
 
+        wakelock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"Screenlock");
+        wakelock.acquire();
 
         view = (LinearLayout) li.inflate(R.layout.screenlock, null);
         tv = (TextView) view.findViewById(R.id.textview3);
@@ -68,18 +87,20 @@ public class AlwaysOnTopService extends Service {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                // TODO Auto-generated method stub
-                while (true) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    time--;
-                    if (time <= 0)
-                        stopSelf();
-                    handler.sendEmptyMessage(0);
+                    // TODO Auto-generated method stub
+                    while (true) {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        time--;
+                        if (time <= 0) {
+
+                            stopSelf();
+                        }
+                        handler.sendEmptyMessage(0);
                 }
             }
         }).start();
@@ -89,9 +110,16 @@ public class AlwaysOnTopService extends Service {
 
 
     @Override
+
     public int onStartCommand(Intent intent, int flags, int startId) {
-        time = intent.getIntExtra("time",1800);
+
+
+
+        time = intent.getIntExtra("time", 3);
+
+
         return START_REDELIVER_INTENT;
+
     }
 
 
@@ -101,6 +129,7 @@ public class AlwaysOnTopService extends Service {
         if (view != null)        //서비스 종료시 뷰 제거. *중요 : 뷰를 꼭 제거 해야함.
         {
             ((WindowManager) getSystemService(WINDOW_SERVICE)).removeView(view);
+            wakelock.release();
             view = null;
         }
     }

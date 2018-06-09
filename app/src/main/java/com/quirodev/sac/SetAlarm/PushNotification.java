@@ -47,6 +47,8 @@ public class PushNotification extends AppCompatActivity {
     EditText user;
     String username,usertime,tokenID;
     String linkuser , sendTokenID , linkuser2;
+    Thread thread2;
+    Thread thread3;
     private DatabaseReference mReference;
     int hour = 0, min = 0, sec = 0 ,h,m,s;
 
@@ -63,12 +65,12 @@ public class PushNotification extends AppCompatActivity {
 
         long now = System.currentTimeMillis();
         Date date = new Date(now);
-        SimpleDateFormat sdfNow= new SimpleDateFormat("HHmmss");
+        SimpleDateFormat sdfNow = new SimpleDateFormat("HHmmss");
         String formatDate = sdfNow.format(date);
 
-        h = Integer.parseInt(formatDate.substring(0,2));
-        m = Integer.parseInt(formatDate.substring(2,4));
-        s = Integer.parseInt(formatDate.substring(4,6));
+        h = Integer.parseInt(formatDate.substring(0, 2));
+        m = Integer.parseInt(formatDate.substring(2, 4));
+        s = Integer.parseInt(formatDate.substring(4, 6));
 
         NumberPicker NmHour = (NumberPicker) findViewById(R.id.setHour);
         NumberPicker NmMin = (NumberPicker) findViewById(R.id.setMin);
@@ -95,82 +97,21 @@ public class PushNotification extends AppCompatActivity {
         //user = (EditText) findViewById(R.id.name);
 
         mReference = FirebaseDatabase.getInstance().getReference().child(username).child("wlinkname");
-        mReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                linkuser = dataSnapshot.getValue().toString();
-                // DatabaseReference ref = FirebaseDatabase.getInstance().getReference(linkuser).child("time");
-                //textView.setText(linkuser + ": " + ref + "사용");
-                //Log.i("링크시간", dataSnapshot.getValue().toString());
-                Log.i("링크유저", linkuser);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        Thread thread2 = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(3000);
-                    DatabaseReference mRef3 = FirebaseDatabase.getInstance().getReference().child(linkuser).child("tokenID");
-                    mRef3.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            sendTokenID = dataSnapshot.getValue().toString();
-                            Log.i("링크토큰", sendTokenID);
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-        };
-        Thread thread3 = new Thread(){
-            @Override
-            public void run() {
-                try{
-                    Thread.sleep(3500);
-                    sendNoti();
-                }
-                catch(Exception e){
-                    e.printStackTrace();
-                }
-            }
-        };
-
-
-        send.setOnClickListener(view -> {
-            hour = NmHour.getValue();
-            min = NmMin.getValue();
-            sec = NmSec.getValue();
 
             mReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    linkuser = dataSnapshot.getValue().toString();
-                    if(linkuser.equals("")){
-                        new AlarmHATT(getApplicationContext()).Alarm();
-                        Toast.makeText(getApplicationContext(), "알람이 설정되었습니다.",Toast.LENGTH_SHORT).show();
-                    }else{
-                        thread2.start();
-                        new AlarmHATT(getApplicationContext()).Alarm();
-                        Toast.makeText(getApplicationContext(), "알람이 설정되었습니다.",Toast.LENGTH_SHORT).show();
-                        thread3.start();
-                    }
-                    // DatabaseReference ref = FirebaseDatabase.getInstance().getReference(linkuser).child("time");
-                    //textView.setText(linkuser + ": " + ref + "사용");
-                    //Log.i("링크시간", dataSnapshot.getValue().toString());
-                    Log.i("링크유저", linkuser);
+                    if(dataSnapshot.getValue() == null){
+                        finish();
+                        Toast.makeText(getApplicationContext(),"랭킹등록을 먼저 해주세요",Toast.LENGTH_LONG).show();
+
+                    }else
+                        linkuser = dataSnapshot.getValue().toString();
+                        // DatabaseReference ref = FirebaseDatabase.getInstance().getReference(linkuser).child("time");
+                        //textView.setText(linkuser + ": " + ref + "사용");
+                        //Log.i("링크시간", dataSnapshot.getValue().toString());
+                        Log.i("링크유저", linkuser);
+
                 }
 
                 @Override
@@ -178,7 +119,85 @@ public class PushNotification extends AppCompatActivity {
 
                 }
             });
-        });
+             thread2 = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(3000);
+                        DatabaseReference mRef3 = FirebaseDatabase.getInstance().getReference().child(linkuser).child("tokenID");
+                        mRef3.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if(dataSnapshot.getValue() == null) {
+                                    finish();
+                                } else {
+                                    sendTokenID = dataSnapshot.getValue().toString();
+                                    Log.i("링크토큰", sendTokenID);
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            };
+             thread3 = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(3500);
+                        sendNoti();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+
+            send.setOnClickListener(view -> {
+                hour = NmHour.getValue();
+                min = NmMin.getValue();
+                sec = NmSec.getValue();
+
+                mReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        linkuser = dataSnapshot.getValue().toString();
+                        if (linkuser.equals("Nobody")) {
+                            new AlarmHATT(getApplicationContext()).Alarm();
+                            Toast.makeText(getApplicationContext(), "알람이 설정되었습니다.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            if(thread2.getState() == Thread.State.NEW) {
+                                thread2.start();
+                            }
+                            new AlarmHATT(getApplicationContext()).Alarm();
+                            Toast.makeText(getApplicationContext(), "알람이 설정되었습니다.", Toast.LENGTH_SHORT).show();
+                            if(thread3.getState() == Thread.State.NEW) {
+                                thread3.start();
+                            }
+
+                        }
+
+                        // DatabaseReference ref = FirebaseDatabase.getInstance().getReference(linkuser).child("time");
+                        //textView.setText(linkuser + ": " + ref + "사용");
+                        //Log.i("링크시간", dataSnapshot.getValue().toString());
+                        Log.i("링크유저", linkuser);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            });
+
 
     }
     public class AlarmHATT {
@@ -219,7 +238,7 @@ public class PushNotification extends AppCompatActivity {
             message.put("to", sendTokenID);
             message.put("data", notification);
             notification.put("title", "SAC");
-            notification.put("body", linkuser + "님이." + hour + "시" + min + "분" + sec + "초 까지 핸드폰을 사용합니다.");
+            notification.put("body", username + "님이." + hour + "시" + min + "분" + sec + "초 까지 핸드폰을 사용합니다.");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -248,7 +267,7 @@ public class PushNotification extends AppCompatActivity {
     }
 
 
-    }
+}
 
 
 

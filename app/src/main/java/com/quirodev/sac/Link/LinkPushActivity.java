@@ -68,133 +68,136 @@ public class LinkPushActivity extends AppCompatActivity {
 
         mReference = FirebaseDatabase.getInstance().getReference().child(username).child("wlinkname");
         //mReference.child("time").setValue(usertime);
-        mReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                linkuser = dataSnapshot.getValue().toString();
-                if (linkuser.equals("")) {
-                    Toast.makeText(getApplicationContext(), "사용자 연동을 먼저 해주세요", Toast.LENGTH_LONG).show();
-                    finish();
-                }
-                // DatabaseReference ref = FirebaseDatabase.getInstance().getReference(linkuser).child("time");
-                //textView.setText(linkuser + ": " + ref + "사용");
-                //Log.i("링크시간", dataSnapshot.getValue().toString());
-                Log.i("링크유저", linkuser);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        Thread thread = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(3000);
-                    if (linkuser.equals("")) {
+            mReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    linkuser = dataSnapshot.getValue().toString();
+                    if (linkuser == null || linkuser.equals("Nobody")) {
+                        Toast.makeText(getApplicationContext(), "사용자 연동을 먼저 해주세요", Toast.LENGTH_LONG).show();
                         finish();
-                    } else {
-                        DatabaseReference mRef2 = FirebaseDatabase.getInstance().getReference(linkuser).child("time");
-                        mRef2.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (dataSnapshot.getValue().toString().equals("")){
-                                            finish();
-                                        } else
-                                            textView.setText(linkuser + "님은 현재까지 " + dataSnapshot.getValue().toString() + " 사용했습니다");
-                                    }
-                                });
-                                Log.i("링크시간", dataSnapshot.getValue().toString());
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                            }
-                        });
                     }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    // DatabaseReference ref = FirebaseDatabase.getInstance().getReference(linkuser).child("time");
+                    //textView.setText(linkuser + ": " + ref + "사용");
+                    //Log.i("링크시간", dataSnapshot.getValue().toString());
+//                    Log.i("링크유저", linkuser);
                 }
-            }
-        };
-        thread.start();
 
-        Thread thread2 = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(3000);
-                    if (linkuser.equals("")) {
-                        finish();
-                    } else {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-                        DatabaseReference mRef3 = FirebaseDatabase.getInstance().getReference().child(linkuser).child("tokenID");
-                        mRef3.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                sendTokenID = dataSnapshot.getValue().toString();
-                                Log.i("링크토큰", sendTokenID);
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }
+            });
 
-        };
-        thread2.start();
 
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                JSONObject message = new JSONObject();
-                JSONObject notification = new JSONObject();
-                try {
-                    message.put("to", sendTokenID);
-                    message.put("data", notification);
-                    notification.put("title", username + " 님의 메시지");
-                    notification.put("body", editText.getText().toString());
+            Thread thread = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(3000);
+                        if (linkuser == null || linkuser.equals("")) {
+                            finish();
+                        } else {
+                            DatabaseReference mRef2 = FirebaseDatabase.getInstance().getReference(linkuser).child("time");
+                            mRef2.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (dataSnapshot.getValue().toString().equals("")) {
+                                                finish();
+                                            } else
+                                                textView.setText(linkuser + "님은 현재까지 " + dataSnapshot.getValue().toString() + " 사용했습니다");
+                                        }
+                                    });
+                                    Log.i("링크시간", dataSnapshot.getValue().toString());
+                                }
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://fcm.googleapis.com/fcm/send", message,
-                        response -> Log.i("onResponse", "" + response.toString()), new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        String response = null;
-                        try {
-                            response = new String(error.networkResponse.data, "UTF-8");
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                }
+                            });
                         }
-                        Log.e("Error Response", response);
-                        Log.e("MYOBJs", message.toString());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                }) {
-                    @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        String SERVER_API_KEY = "AAAAhRhBjVY:APA91bEyCm8Y-1y5MqAFAUEzJBOWS9OFIONsWPjDu9ed6ghM-tBC7d1hQUIc3njLKaveI60VFg68Zu2BD-OYOXXVE--8jRYPvwOh4ZRjyB0ppgrkrrnEpLLVOt_-L9SGQwmxMvVA0mo2";
-                        Map<String, String> headers = new HashMap<String, String>();
-                        headers.put("Authorization", "key=" + SERVER_API_KEY);
-                        headers.put("Content-Type", " application/json; charset=UTF-8");
-                        return headers;
+                }
+            };
+            thread.start();
+
+            Thread thread2 = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(3000);
+                        if (linkuser.equals("")) {
+                            finish();
+                        } else {
+
+                            DatabaseReference mRef3 = FirebaseDatabase.getInstance().getReference().child(linkuser).child("tokenID");
+                            mRef3.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    sendTokenID = dataSnapshot.getValue().toString();
+                                    Log.i("링크토큰", sendTokenID);
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                };
-                com.quirodev.sac.Link.MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
-            }
-        });
-    }
+                }
+
+            };
+            thread2.start();
+
+            send.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    JSONObject message = new JSONObject();
+                    JSONObject notification = new JSONObject();
+                    try {
+                        message.put("to", sendTokenID);
+                        message.put("data", notification);
+                        notification.put("title", username + " 님의 메시지");
+                        notification.put("body", editText.getText().toString());
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://fcm.googleapis.com/fcm/send", message,
+                            response -> Log.i("onResponse", "" + response.toString()), new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            String response = null;
+                            try {
+                                response = new String(error.networkResponse.data, "UTF-8");
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                            Log.e("Error Response", response);
+                            Log.e("MYOBJs", message.toString());
+                        }
+                    }) {
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            String SERVER_API_KEY = "AAAAhRhBjVY:APA91bEyCm8Y-1y5MqAFAUEzJBOWS9OFIONsWPjDu9ed6ghM-tBC7d1hQUIc3njLKaveI60VFg68Zu2BD-OYOXXVE--8jRYPvwOh4ZRjyB0ppgrkrrnEpLLVOt_-L9SGQwmxMvVA0mo2";
+                            Map<String, String> headers = new HashMap<String, String>();
+                            headers.put("Authorization", "key=" + SERVER_API_KEY);
+                            headers.put("Content-Type", " application/json; charset=UTF-8");
+                            return headers;
+                        }
+                    };
+                    com.quirodev.sac.Link.MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
+                }
+            });
+        }
+
 }
 

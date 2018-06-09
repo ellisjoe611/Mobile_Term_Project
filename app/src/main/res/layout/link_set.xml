@@ -40,7 +40,7 @@
             android:layout_height="wrap_content">
             <Button
                 android:id="@+id/set_user_link"
-                android:background="@color/colorWhite"
+                android:background="@drawable/ripple"
                 android:textColor="@color/colorPrimary"
                 android:layout_width="match_parent"
                 android:layout_height="53dp"

@@ -76,8 +76,13 @@ public class ReceiveMessage extends BroadcastReceiver {
                     mRef3.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            sendTokenID = dataSnapshot.getValue().toString();
-                            Log.i("링크토큰", sendTokenID);
+                            if(dataSnapshot.getValue() == null){
+
+
+                            }else {
+                                sendTokenID = dataSnapshot.getValue().toString();
+                                Log.i("링크토큰", sendTokenID);
+                            }
                         }
 
                         @Override
@@ -102,7 +107,7 @@ public class ReceiveMessage extends BroadcastReceiver {
                         message.put("to", sendTokenID);
                         message.put("data", notification);
                         notification.put("title", "SAC");
-                        notification.put("body", linkuser + "님의 핸드폰 사용시간이 만료되었습니다.");
+                        notification.put("body", username + "님의 핸드폰 사용시간이 만료되었습니다.");
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -140,8 +145,12 @@ public class ReceiveMessage extends BroadcastReceiver {
                 if (linkuser.equals("")){
 
                 }else{
-                    thread2.start();
-                    thread3.start();
+                    if(thread2.getState() == Thread.State.NEW) {
+                        thread2.start();
+                    }
+                    if(thread3.getState() == Thread.State.NEW) {
+                        thread3.start();
+                    }
                 }
                 // DatabaseReference ref = FirebaseDatabase.getInstance().getReference(linkuser).child("time");
                 //textView.setText(linkuser + ": " + ref + "사용");

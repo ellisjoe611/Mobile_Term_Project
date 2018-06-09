@@ -36,9 +36,11 @@ public class UsagePresenter_W implements UsageContract.Presenter {
 
     private long getStartTime() {
         Calendar calendar = Calendar.getInstance();
-        calendar.get(Calendar.WEEK_OF_MONTH);
-        calendar.set(Calendar.DAY_OF_WEEK,1);
-
+        calendar.add(Calendar.DATE, -7);
+        return calendar.getTimeInMillis();
+    }
+    private long getEndTIme(){
+        Calendar calendar = Calendar.getInstance();
         return calendar.getTimeInMillis();
     }
 

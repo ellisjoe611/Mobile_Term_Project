@@ -52,8 +52,8 @@
                     android:layout_height="wrap_content">
                 <Button
                     android:drawableTop="@drawable/usage"
-                    android:paddingTop="50dp"
-                    android:paddingBottom="40dp"
+                    android:paddingTop="40dp"
+                    android:paddingBottom="30dp"
                     android:id="@+id/btn1"
                     android:text="App usage"
                     android:layout_weight="1"
@@ -68,8 +68,8 @@
                     android:drawableTop="@drawable/tablet"
                     android:layout_weight="1"
                     android:id="@+id/btn2"
-                    android:paddingTop="50dp"
-                    android:paddingBottom="40dp"
+                    android:paddingTop="40dp"
+                    android:paddingBottom="30dp"
                     android:text="Screen Lock"
                     android:background="@drawable/ripple"
                     android:layout_width="match_parent"
@@ -86,7 +86,7 @@
                     android:layout_height="match_parent">
                 <Button
                     android:drawableTop="@drawable/ranking"
-                    android:paddingTop="50dp"
+                    android:paddingTop="40dp"
                     android:paddingBottom="30dp"
                     android:layout_weight="1"
                     android:id="@+id/btn3"
@@ -100,7 +100,7 @@
                         android:layout_height="match_parent"/>
                 <Button
                     android:drawableTop="@drawable/setalarm"
-                    android:paddingTop="50dp"
+                    android:paddingTop="40dp"
                     android:paddingBottom="30dp"
                     android:layout_weight="1"
                     android:id="@+id/btn4"
@@ -120,7 +120,7 @@
                     android:layout_height="match_parent">
                 <Button
                     android:drawableTop="@drawable/linked"
-                    android:paddingTop="50dp"
+                    android:paddingTop="40dp"
                     android:paddingBottom="30dp"
                     android:layout_weight="1"
                     android:id="@+id/btn5"
@@ -137,7 +137,7 @@
                         android:layout_weight="1"
                         android:text="How to use"
                         android:drawableTop="@drawable/ex"
-                        android:paddingTop="50dp"
+                        android:paddingTop="40dp"
                         android:paddingBottom="30dp"
                         android:background="@drawable/ripple"
                         android:layout_width="match_parent"

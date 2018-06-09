@@ -45,13 +45,12 @@ public class SetLinkActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 linkUsername = linkUser.getText().toString();
-                if(linkUsername.equals("")){
+                if(linkUsername == null || linkUsername.equals("")){
                     Toast.makeText(getApplicationContext(),"이름을 제대로 입력해 주세요",Toast.LENGTH_SHORT).show();
                     finish();
                 }else {
                     mReference = mDatabase.getInstance().getReference().child(username).child("wlinkname");
                     mReference.setValue(linkUsername);
-
 
                     Toast.makeText(getApplicationContext(), "연동 완료", Toast.LENGTH_LONG).show();
                     finish();

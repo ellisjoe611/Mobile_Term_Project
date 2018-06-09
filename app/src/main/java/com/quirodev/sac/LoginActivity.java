@@ -65,6 +65,7 @@ public class LoginActivity  extends AppCompatActivity implements View.OnClickLis
                                 } else {
                                         init();
 
+
                                 }
                         }
                 };
@@ -109,7 +110,6 @@ public class LoginActivity  extends AppCompatActivity implements View.OnClickLis
 
                 // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
                 if (requestCode == RC_SIGN_IN) {
-
                         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
                         try{ GoogleSignInAccount account = task.getResult(ApiException.class);
                                 firebaseAuthWithGoogle(account);

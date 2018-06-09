@@ -11,7 +11,7 @@
         <item
             android:id="@+id/Applock"
             android:icon="@drawable/padlock"
-            android:title="AppLock" />
+            android:title="ScreenLock" />
         <item
             android:id="@+id/Ranking"
             android:icon="@drawable/ranking"
