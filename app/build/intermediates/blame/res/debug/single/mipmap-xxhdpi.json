@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "C:\\Users\\1115l\\AndroidStudioProjects\\MTP_SAC\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi\\icon2.png",
+        "source": "C:\\Users\\1115l\\AndroidStudioProjects\\MTP_SAC\\app\\src\\main\\res\\mipmap-xxhdpi\\icon2.png"
+    },
+    {
+        "merged": "C:\\Users\\1115l\\AndroidStudioProjects\\MTP_SAC\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi\\ic_launcher.png",
+        "source": "C:\\Users\\1115l\\AndroidStudioProjects\\MTP_SAC\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\1115l\\AndroidStudioProjects\\MTP_SAC\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi\\ic_launcher_foreground.png",
+        "source": "C:\\Users\\1115l\\AndroidStudioProjects\\MTP_SAC\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\1115l\\AndroidStudioProjects\\MTP_SAC\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi\\icon.png",
+        "source": "C:\\Users\\1115l\\AndroidStudioProjects\\MTP_SAC\\app\\src\\main\\res\\mipmap-xxhdpi\\icon.png"
+    }
+]
