@@ -44,7 +44,7 @@ import static com.quirodev.sac.MainActivity.mContext;
 public class PushNotification extends AppCompatActivity {
 
     Button send;
-
+    Button ikit;
     String username,tokenID;
     String linkuser , sendTokenID;
     Thread thread2;
