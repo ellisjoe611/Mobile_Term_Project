@@ -147,7 +147,7 @@ public class LoginActivity  extends AppCompatActivity implements View.OnClickLis
         }
         // [END handleSignInResult]
 
-        private void signIn() {
+        public void signIn() {
                 Intent signInIntent = mGoogleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, RC_SIGN_IN);
         }

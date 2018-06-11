@@ -43,7 +43,7 @@ public class setTime extends AppCompatActivity {
         tm = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
 
 
-        String username = ((MainActivity) mContext).getName();
+        //String username = ((MainActivity) mContext).getName();
         //setTime = (EditText) findViewById(R.id.settime);
 
         NumberPicker NmHour = (NumberPicker) findViewById(R.id.locksetHour);
