@@ -39,7 +39,7 @@ public class Fragment4 extends Fragment implements UsageContract.View {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       
+
     }
 
     @Nullable
