@@ -39,21 +39,7 @@ public class Fragment4 extends Fragment implements UsageContract.View {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*
-        setContentView(R.layout.get_daily);
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
-        permissionMessage = (TextView) findViewById(R.id.grant_permission_message);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new UsageStatAdapter();
-        recyclerView.setAdapter(adapter);
-
-        permissionMessage.setOnClickListener(v -> openSettings());
-
-        presenter = new UsagePresenter_D(this, this);
-        */
+       
     }
 
     @Nullable
