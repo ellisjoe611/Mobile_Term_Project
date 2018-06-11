@@ -57,38 +57,6 @@ public class UsageFragment extends Fragment{
         mviewPager = (ViewPager) view.findViewById(R.id.viewpager);
         mpagerAdapter = new pagerAdapter(getActivity().getSupportFragmentManager());
         mviewPager.setAdapter(mpagerAdapter);
-        //mviewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-        /*
-        @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                Fragment fragment = ((pagerAdapter)mpagerAdapter).getItem(position);
-                switch(position) {
-                    case 0:
-                        ((MainActivity)getActivity()).setTime(((Fragment1)fragment).getTotal());
-                        break;
-                    case 1:
-                        ((MainActivity)getActivity()).setTime(((Fragment2)fragment).getTotal());
-                        break;
-                    case 2:
-                        ((MainActivity)getActivity()).setTime(((Fragment3)fragment).getTotal());
-                        break;
-                    case 3:
-                        ((MainActivity)getActivity()).setTime(((Fragment4)fragment).getTotal());
-                        break;
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-        */
         mTab.setupWithViewPager(mviewPager);
 
         return view;
