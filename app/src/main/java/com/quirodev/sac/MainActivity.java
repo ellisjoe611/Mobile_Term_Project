@@ -69,10 +69,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        //mPager = (ViewPager) findViewById(R.id.main_pager);
-        //MainPagerAdapter mAdapter = new MainPagerAdapter(getSupportFragmentManager());
-        // mPager.setAdapter(mAdapter);
-        //mTab.setupWithViewPager(mPager);
+
 
 
         usageText = (TextView) findViewById(R.id.textview);

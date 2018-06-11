@@ -71,30 +71,6 @@ public class UsagePresenter_D  implements UsageContract.Presenter {
 
         view.onUsageStatsRetrieved(finalList);
 
-        /*
-        List<UsageStats> stats2 = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, getStartTime2(),System.currentTimeMillis());
-        for(int i = 0; i< installedApps.size(); i++){
-            Log.d("앱",installedApps.get(i));
-
-        }
-
-        for(int i = 0; i< stats.size(); i++){
-            Log.d("시간1",""+stats.get(i).getTotalTimeInForeground());
-        }
-
-        for(int i = 0; i< stats2.size(); i++){
-            Log.d("시간2",""+stats2.get(i).getTotalTimeInForeground());
-        }
-        /*
-        for(int i = 0; i< stats.size(); i++){
-            if(stats.get(i).getTotalTimeInForeground() == stats2.get( java.lang.NullPointerExceptioni).getTotalTimeInForeground()){
-                stats.remove(i);
-            }
-
-        }
-        */
-
-        //Map<String, UsageStats> usageStats = usageStatsManager.queryAndAggregateUsageStats(getStartTime(), System.currentTimeMillis());
 
 
     }
@@ -118,88 +94,7 @@ public class UsagePresenter_D  implements UsageContract.Presenter {
         return installedApps;
     }
 
-//두개뜸
-    /*
-    private List<UsageStatsWrapper> buildUsageStatsWrapper(List<String> packageNames, List<UsageStats> usageStatses) {
-        List<UsageStats> pre_list = new ArrayList<>();
-        List<UsageStatsWrapper> list = new ArrayList<>();
 
-
-        for (String name : packageNames) {
-            boolean added = false;
-            for (UsageStats stat : usageStatses) {
-                if (name.equals(stat.getPackageName())) {
-                    added = true;
-
-                }
-            }
-            if (!added) {
-                list.add(fromUsageStat(name));
-            }
-        }
-
-        Collections.sort(list);
-
-        for(int i =0;i<list.size();i++){
-            Log.d("name",list.get(i).getAppName());
-        }
-
-        return list;
-
-    }
-*/
-/*
-//예전값이 뜸
-public List<UsageStatsWrapper> buildUsageStatsWrapper(List<String> packageNames, List<UsageStats> usageStatses) {
-
-    List<UsageStatsWrapper> list = new ArrayList<>();
-    for (String name : packageNames) {
-        boolean added = false;
-        for (UsageStats stat : usageStatses) {
-            if (name.equals(stat.getPackageName())) {
-                added = true;
-                UsageStatsWrapper usageStatsWrapper = fromUsageStat(stat);
-                name = usageStatsWrapper.getAppName();
-
-                list.add(usageStatsWrapper);
-                        //(new UsageStatsWrapper(usageStatsWrapper.getUsageStats(), usageStatsWrapper.getAppIcon(), name));
-            }
-        }
-        if (!added) {
-            list.add(fromUsageStat(name));
-        }
-    }
-    Collections.sort(list);
-    return list;
-}
-*/
-/*
-에러
-private List<UsageStatsWrapper> buildUsageStatsWrapper(List<String> packageNames, List<UsageStats> usageStatses) {
-    List<UsageStatsWrapper> list = new ArrayList<>();
-    for (String name : packageNames) {
-        list.add(fromUsageStat(name));
-    }
-    Collections.sort(list);
-    return list;
-}
-*/
-
-//다시두개뜸 날짜 바뀔때 마다 들어감.
-/*
-private List<UsageStatsWrapper> buildUsageStatsWrapper(List<String> packageNames, List<UsageStats> usageStatses) {
-    List<UsageStatsWrapper> list = new ArrayList<>();
-    for (String name : packageNames) {
-        for (UsageStats stat : usageStatses) {
-            if (name.equals(stat.getPackageName())){
-                list.add(fromUsageStat(stat));
-            }
-        }
-    }
-    Collections.sort(list);
-    return list;
-}
-*/
 
 private List<UsageStatsWrapper> buildUsageStatsWrapper(List<String> packageNames, HashMap<String, UsageStats> usageStatses) {
 
